@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import * as Three from 'three'
+  import * as THREE from 'three'
   export default {
     name: 'hello',
     data () {
@@ -26,7 +26,6 @@
     },
     methods: {
       init () {
-        console.log('----', Three)
         const container = document.createElement('div')
         document.body.appendChild(container)
         const info = document.createElement('div')
@@ -36,26 +35,27 @@
         info.style.textAlign = 'center'
         info.innerHTML = 'Drag to spin the cube'
         container.appendChild(info)
-        this.camera = Three.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
+        this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
         this.camera.position.y = 150
         this.camera.position.z = 500
-        this.scene = Three.Scene()
-        const geometry = Three.BoxGeometry(200, 200, 200)
+        this.scene = new THREE.Scene()
+        const geometry = new THREE.BoxGeometry(200, 200, 200)
         for (let i = 0; i < geometry.faces.length; i = i + 2) {
           const hex = Math.random() * 0xffffff
           geometry.faces[ i ].color.setHex(hex)
           geometry.faces[ i + 1 ].color.setHex(hex)
         }
-        const material = Three.MeshBasicMaterial({ vertexColors: Three.FaceColors, overdraw: 0.5 })
-        this.cube = Three.Mesh(geometry, material)
+        const material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors, overdraw: 0.5 })
+        this.cube = new THREE.Mesh(geometry, material)
         this.cube.position.y = 150
         this.scene.add(this.cube)
-        const geometry2 = Three.PlaneBufferGeometry(200, 200)
+        const geometry2 = new THREE.PlaneBufferGeometry(200, 200)
         geometry2.rotateX(-Math.PI / 2)
-        const material2 = Three.MeshBasicMaterial({ color: 0xe0e0e0, overdraw: 0.5 })
-        this.plane = Three.Mesh(geometry2, material2)
+        const material2 = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, overdraw: 0.5 })
+        this.plane = new THREE.Mesh(geometry2, material2)
         this.scene.add(this.plane)
-        this.renderer = Three.CanvasRenderer()
+        // this.renderer = new THREE.CanvasRenderer()
+        this.renderer = new THREE.WebGLRenderer()
         this.renderer.setClearColor(0xf0f0f0)
         this.renderer.setPixelRatio(window.devicePixelRatio)
         this.renderer.setSize(window.innerWidth, window.innerHeight)
