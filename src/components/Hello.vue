@@ -17,6 +17,9 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
+    <p><router-link to="/threejs1">Go to threejs1</router-link></p>
+    <p><router-link to="/vueroutertest/1">Go to vueRouterTest1</router-link></p>
+    <p><router-link to="/vueroutertest/2">Go to vueRouterTest2</router-link></p>
   </div>
 </template>
 
