@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <div><router-link to="../">go back</router-link></div>
+    <div><router-link to="/">go back</router-link></div>
   </div>
 </template>
 
