@@ -11,6 +11,7 @@
     name: 'hello',
     data () {
       return {
+        requestAnimationFrameId: null, // Recording requestAnimationFrame id,when the component destroyes,we use cancelAnimationFrame to stop requestAnimationFrame.
         plane: null,
         cube: null,
         windowHalfX: 0,
@@ -22,12 +23,13 @@
         targetRotationOnMouseDown: 0,
         mouseX: 0,
         mouseXOnMouseDown: 0,
-        msg: 'Welcome to Your Vue.js App'
+        msg: ''
       }
     },
     methods: {
       init () {
         const container = document.createElement('div')
+        container.setAttribute('id', 'threecontainer')
         document.body.appendChild(container)
         const info = document.createElement('div')
         info.style.position = 'absolute'
@@ -113,7 +115,7 @@
         }
       },
       animate () {
-        requestAnimationFrame(this.animate)
+        this.requestAnimationFrameId = requestAnimationFrame(this.animate)
         this.render()
       },
       render () {
@@ -126,6 +128,24 @@
     mounted () {
       this.init()
       this.animate()
+    },
+    beforeDestroy () {
+      window.cancelAnimationFrame(this.requestAnimationFrameId)
+      this.plane = null
+      this.cube = null
+      this.windowHalfX = 0
+      this.windowHalfY = 0
+      this.camera = null
+      this.scene = null
+      this.renderer = null
+      this.targetRotation = 0
+      this.targetRotationOnMouseDown = 0
+      this.mouseX = 0
+      this.mouseXOnMouseDown = 0
+    },
+    destroyed () {
+      const container = document.getElementById('threecontainer')
+      container.parentNode.removeChild(container)
     }
   }
 </script>
