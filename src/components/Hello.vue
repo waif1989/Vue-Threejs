@@ -22,18 +22,22 @@
     <p><router-link to="/routerB">Alias routerB and with component Threejs1</router-link></p>
     <p><router-link to="/vueroutertest/1">Go to vueRouterTest1</router-link></p>
     <p><router-link to="/vueroutertest/2">Go to vueRouterTest2</router-link></p>
+    <p><router-link to="/vuerouterfinishgetdata">Go to vuerouterfinishgetdata</router-link></p>
+    <p><router-link to="/vuerouterbeforegetdata">Go to vuerouterbeforegetdata</router-link></p>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  export default {
+    name: 'hello',
+    data () {
+      return {
+        post: null,
+        error: null,
+        msg: 'Welcome to Your Vue.js App'
+      }
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

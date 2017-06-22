@@ -6,6 +6,8 @@ import Three2 from '@/components/Threejs2'
 import Vueroutertest from '@/components/VueRouterTest'
 import UserProfile from '@/components/VueRouterChildrenTest/UserProfile'
 import UserPosts from '@/components/VueRouterChildrenTest/UserPosts'
+import Vuerouterfinishgetdata from '@/components/VueRouterFinishGetData'
+import Vuerouterbeforegetdata from '@/components/VueRouterBeforeGetData'
 
 Vue.use(Router)
 
@@ -59,6 +61,18 @@ export default new Router({
           redirect: { name: 'ThreeDemo1' }
         }
       ]
+    },
+    {
+      // RouterFinishGetData(导航完成后获取数据)
+      path: '/vuerouterfinishgetdata',
+      name: 'Vuerouterfinishgetdata',
+      component: Vuerouterfinishgetdata
+    },
+    {
+      // RouterBeforeGetData(导航完成前获取数据)
+      path: '/vuerouterbeforegetdata',
+      name: 'Vuerouterbeforegetdata',
+      component: Vuerouterbeforegetdata
     }
   ]
 })
