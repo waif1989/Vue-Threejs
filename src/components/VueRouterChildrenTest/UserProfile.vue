@@ -1,7 +1,9 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  </div>
+  <transition name="fade">
+    <div class="hello">
+      <h1>{{ msg }}</h1>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -10,6 +12,9 @@ export default {
     return {
       msg: 'UserProfile'
     }
+  },
+  beforeDestroy () {
+    this.msg = ''
   }
 }
 </script>
@@ -32,5 +37,11 @@ li {
 
 a {
   color: #42b983;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
 }
 </style>
