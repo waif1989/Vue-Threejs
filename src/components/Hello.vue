@@ -24,6 +24,7 @@
     <p><router-link to="/vueroutertest/2">Go to vueRouterTest2</router-link></p>
     <p><router-link to="/vuerouterfinishgetdata">Go to vuerouterfinishgetdata</router-link></p>
     <p><router-link to="/vuerouterbeforegetdata">Go to vuerouterbeforegetdata</router-link></p>
+    <p><router-link to="/vuelonglist">Go to vuelonglist</router-link></p>
   </div>
 </template>
 
