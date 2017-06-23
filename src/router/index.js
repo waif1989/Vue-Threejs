@@ -12,6 +12,12 @@ import Vuelonglist from '@/components/vueLongList'
 
 Vue.use(Router)
 
+const LazyLoadComponent = resolve => {
+  require.ensure(['@/components/VueRouterLazy'], () => {
+    resolve(require('@/components/VueRouterLazy'))
+  })
+}
+
 const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
     console.log('to.savedPosition')
@@ -99,6 +105,12 @@ export default new Router({
       name: 'Vuelonglist',
       component: Vuelonglist,
       meta: { scrollToTop: true }
+    },
+    {
+      // Test lazyload router
+      path: '/lazyloadcomponent',
+      name: 'LazyLoadComponent',
+      component: LazyLoadComponent
     },
     {
       // RouterFinishGetData(导航完成后获取数据)

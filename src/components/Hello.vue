@@ -25,6 +25,7 @@
     <p><router-link to="/vuerouterfinishgetdata">Go to vuerouterfinishgetdata</router-link></p>
     <p><router-link to="/vuerouterbeforegetdata">Go to vuerouterbeforegetdata</router-link></p>
     <p><router-link to="/vuelonglist">Go to vuelonglist</router-link></p>
+    <p><router-link to="/lazyloadcomponent">Go to lazyloadcomponent</router-link></p>
   </div>
 </template>
 
