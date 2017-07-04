@@ -107,7 +107,7 @@ export default new Router({
       meta: { scrollToTop: true }
     },
     {
-      // Test lazyload router
+      // Test lazyload router(异步加载路由组件)
       path: '/lazyloadcomponent',
       name: 'LazyLoadComponent',
       component: LazyLoadComponent

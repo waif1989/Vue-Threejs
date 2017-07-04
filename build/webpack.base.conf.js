@@ -9,7 +9,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/main.js'  // 正常的同步加载组件 + 前端路由
+    // app: './src/lazymain.js' // 异步加载组件
   },
   output: {
     path: config.build.assetsRoot,
