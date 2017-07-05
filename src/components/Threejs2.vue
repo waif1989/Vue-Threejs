@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>threejs2</h1>
+    <div><router-link to="/">go back</router-link></div>
   </div>
 </template>
 
@@ -25,7 +26,6 @@
 </style>
 
 <script>
-  /* eslint-disable */
   import * as THREE from 'three'
   import Envjpg from '../assets/models/spherical_texture.jpg'
   export default {
@@ -75,66 +75,47 @@
         this.renderer = new THREE.WebGLRenderer({ antialias: true })
         this.renderer.setSize(window.innerWidth, window.innerHeight)
         this.container.appendChild(this.renderer.domElement)
-        // document.addEventListener('mousedown', this.onDocumentMouseDown, false)
+        this.container.addEventListener('mousedown', this.onDocumentMouseDown, false)
         this.container.addEventListener('touchstart', this.onDocumentTouchStart, false)
-        // this.container.addEventListener('touchmove', this.onDocumentTouchMove, false)
         window.addEventListener('resize', this.onWindowResize, false)
         // this.onWindowResize(null)
       },
       onWindowResize (event) {
-//        this.windowHalfX = window.innerWidth / 2
-//        this.windowHalfY = window.innerHeight / 2
-//        this.camera.aspect = window.innerWidth / window.innerHeight
-//        this.camera.updateProjectionMatrix()
-//        this.renderer.setSize(window.innerWidth, window.innerHeight)
         this.renderer.setSize(window.innerWidth, window.innerHeight)
         this.camera.projectionMatrix.makePerspective(this.fov, this.ratio, 1, 1100)
       },
       onDocumentMouseDown (event) {
         event.preventDefault()
-        document.addEventListener('mousemove', this.onDocumentMouseMove, false)
-        document.addEventListener('mouseup', this.onDocumentMouseUp, false)
-        document.addEventListener('mouseout', this.onDocumentMouseOut, false)
-        this.mouseXOnMouseDown = event.clientX - this.windowHalfX
-        this.targetRotationOnMouseDown = this.targetRotation
-      },
-     /* onDocumentMouseMove (event) {
-        this.mouseX = event.clientX - this.windowHalfX
-        this.targetRotation = this.targetRotationOnMouseDown + (this.mouseX - this.mouseXOnMouseDown) * 0.02
-      },
-      onDocumentMouseUp (event) {
-        document.removeEventListener('mousemove', this.onDocumentMouseMove, false)
-        document.removeEventListener('mouseup', this.onDocumentMouseUp, false)
-        document.removeEventListener('mouseout', this.onDocumentMouseOut, false)
-      },
-      onDocumentMouseOut (event) {
-        document.removeEventListener('mousemove', this.onDocumentMouseMove, false)
-        document.removeEventListener('mouseup', this.onDocumentMouseUp, false)
-        document.removeEventListener('mouseout', this.onDocumentMouseOut, false)
-      },*/
-      onDocumentTouchStart (event) {
-//        if (event.touches.length === 1) {
-//          event.preventDefault()
-//          this.mouseXOnMouseDown = event.touches[ 0 ].pageX - this.windowHalfX
-//          this.targetRotationOnMouseDown = this.targetRotation
-//        }
-        event.preventDefault()
+        this.isUserInteracting = true
         this.onPointerDownPointerX = event.clientX
         this.onPointerDownPointerY = event.clientY
         this.onPointerDownLon = this.lon
         this.onPointerDownLat = this.lat
+        this.container.addEventListener('mousemove', this.onDocumentMouseMove, false)
+        this.container.addEventListener('mouseup', this.onDocumentMouseUp, false)
+      },
+      onDocumentMouseMove (event) {
+        this.lon = (event.clientX - this.onPointerDownPointerX) * -0.175 + this.onPointerDownLon
+        this.lat = (event.clientY - this.onPointerDownPointerY) * -0.175 + this.onPointerDownLat
+      },
+      onDocumentMouseUp () {
+        this.isUserInteracting = false
+        this.container.removeEventListener('mousemove', this.onDocumentMouseMove, false)
+        this.container.removeEventListener('mouseup', this.onDocumentMouseUp, false)
+      },
+      onDocumentTouchStart (event) {
+        event.preventDefault()
         this.isUserInteracting = true
+        this.onPointerDownPointerX = event.touches[ 0 ].pageX
+        this.onPointerDownPointerY = event.touches[ 0 ].pageY
+        this.onPointerDownLon = this.lon
+        this.onPointerDownLat = this.lat
         this.container.addEventListener('touchmove', this.onDocumentTouchMove, false)
         this.container.addEventListener('touchmoveend', this.onDocumentTouchEnd, false)
       },
       onDocumentTouchMove (event) {
-//        if (event.touches.length === 1) {
-//          event.preventDefault()
-//          this.mouseX = event.touches[ 0 ].pageX - this.windowHalfX
-//          this.targetRotation = this.targetRotationOnMouseDown + (this.mouseX - this.mouseXOnMouseDown) * 0.05
-//        }
-        this.lon = (event.clientX - this.onPointerDownPointerX) * -0.175 + this.onPointerDownLon
-        this.lat = (event.clientY - this.onPointerDownPointerY) * -0.175 + this.onPointerDownLat
+        this.lon = (event.touches[ 0 ].pageX - this.onPointerDownPointerX) * -0.175 + this.onPointerDownLon
+        this.lat = (event.touches[ 0 ].pageY - this.onPointerDownPointerY) * -0.175 + this.onPointerDownLat
       },
       onDocumentTouchEnd () {
         this.isUserInteracting = false
@@ -146,10 +127,8 @@
         this.render()
       },
       render () {
-//        this.plane.rotation.y = this.cube.rotation.y += (this.targetRotation - this.cube.rotation.y) * 0.05
-//        this.renderer.render(this.scene, this.camera)
         if (this.isUserInteracting === false) {
-          this.lon += .05
+          this.lon = this.lon + 0.15
         }
         this.lat = Math.max(-85, Math.min(85, this.lat))
         this.phi = THREE.Math.degToRad(90 - this.lat)
@@ -162,12 +141,43 @@
       }
     },
     mounted () {
-      // this.init()
-      // this.animate()
       this.texture = THREE.ImageUtils.loadTexture(Envjpg, undefined, () => {
         this.init()
         this.animate()
       })
+    },
+    beforeDestroy () {
+      window.cancelAnimationFrame(this.requestAnimationFrameId)
+      this.mesh = {}
+      this.texture = {}
+      this.container = {}
+      this.isUserInteracting = false
+      this.fov = 70
+      this.lon = 0
+      this.lat = 0
+      this.phi = 0
+      this.theta = 0
+      this.onPointerDownPointerX = 0
+      this.onPointerDownPointerY = 0
+      this.onPointerDownLon = 0
+      this.onPointerDownLat = 0
+      this.plane = null
+      this.cube = null
+      this.windowHalfX = 0
+      this.windowHalfY = 0
+      this.ratio = 0
+      this.camera = null
+      this.scene = null
+      this.renderer = null
+      this.targetRotation = 0
+      this.targetRotationOnMouseDown = 0
+      this.mouseX = 0
+      this.mouseXOnMouseDown = 0
+      this.msg = ''
+    },
+    destroyed () {
+      const container = document.getElementById('threecontainer')
+      container.parentNode.removeChild(container)
     }
   }
 </script>
