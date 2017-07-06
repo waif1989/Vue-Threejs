@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Three from '@/components/Threejs1'
 import Three2 from '@/components/Threejs2'
+import Jquery3D from '@/components/JqueryThree'
 import Vueroutertest from '@/components/VueRouterTest'
 import UserProfile from '@/components/VueRouterChildrenTest/UserProfile'
 import UserPosts from '@/components/VueRouterChildrenTest/UserPosts'
@@ -66,6 +67,12 @@ export default new Router({
       path: '/threejs2',
       name: 'ThreeDemo2',
       component: Three2
+    },
+    {
+      // Jquery3D Demo3(Jquery3D实例)
+      path: '/jquery3d',
+      name: 'Jquery3D',
+      component: Jquery3D
     },
     {
       // Alias router name,'/routerA' == '/routerB'(路由别名)

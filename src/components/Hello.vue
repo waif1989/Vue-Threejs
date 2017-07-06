@@ -19,6 +19,7 @@
     </ul>
     <p><router-link to="/threejs1">Go to threejs1</router-link></p>
     <p><router-link to="/threejs2">Go to threejs2</router-link></p>
+    <p><router-link to="/jquery3d">Go to jquery3d</router-link></p>
     <p><router-link to="/a">Redirection to threejs1</router-link></p>
     <p><router-link to="/routerB">Alias routerB and with component Threejs1</router-link></p>
     <p><router-link to="/vueroutertest/1">Go to vueRouterTest1</router-link></p>
