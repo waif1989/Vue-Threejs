@@ -240,15 +240,8 @@
       for (let i = 0; i < 37; i++) {
         imgArr[i] = require(`../assets/models/jq3d-images/frame_${ i + 1 }.png`)
       }
-      const head = document.getElementsByTagName('head')[0]
-      const imagesURL = '/jq3d-images/interactive_3d.png'
-      const linkTag = document.createElement('link')
-      linkTag.setAttribute('rel', 'image_src')
-      linkTag.href = imagesURL
-      head.appendChild(linkTag)
       Jq3d($)
       $('#i3d').interactive_3d({
-        frames: 38,
         imgArr: imgArr
       })
     }

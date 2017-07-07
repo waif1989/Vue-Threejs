@@ -24,6 +24,8 @@ export function Jq3d ($) {
     autoPlay: false
   }
 
+  var imgArrIndex = 0
+
   function touchHandler (event) {
     var touch = event.changedTouches[0]
 
@@ -57,20 +59,15 @@ export function Jq3d ($) {
       $drag.parents().on('mousemove', function (e) {
         if ($('.draggable').length > 0) {
           var src = $el.find('img.main-frame').attr('src')
-          var img_name = src.split('/')[src.split('/').length-1]
-          var cur_frame = img_name.split('_')[1].split('.')[0]
-          // if (Math.floor(cur_frame) >= settings.frames - 1) {
-          //   cur_frame = 1
-          // }
-          var criticalPoint = false
-          console.log('========', Math.floor(cur_frame), imgArr.length, criticalPoint)
-          // if (Math.floor(cur_frame) >= imgArr.length) {
-          //   cur_frame = 1
-          //   console.log('reset')
-          // }
-          if (Math.floor(cur_frame) == imgArr.length) {
-            criticalPoint = true
-            console.log('reset', criticalPoint)
+          var cur_frame = imgArrIndex
+          // console.log('========', Math.floor(cur_frame), imgArr.length)
+          if (Math.floor(cur_frame) < 0) {
+            imgArrIndex = 0
+            cur_frame = imgArrIndex
+          }
+          if (Math.floor(cur_frame) > Math.floor(imgArr.length)) {
+            imgArrIndex = Math.floor(imgArr.length)
+            cur_frame = imgArrIndex
           }
 
           if (typeof(last_position.x) != 'undefined') {
@@ -81,63 +78,49 @@ export function Jq3d ($) {
             if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX > 0) {
               if (Math.floor(cur_frame) > 1) {
                 setTimeout(function () {
-                  // var img_name = src.split('/')[src.split('/').length-1]
-                  // var directory = src.split('/').slice(0, -1).join('/')
-                  // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(cur_frame) - 1) + '.' + img_name.split('.')[1]
-                  // $el.find('img.main-frame').attr('src', new_frame)
-                  // cur_frame = Math.floor(cur_frame) - 1
-                  // console.log('state1', cur_frame, imgArr[Math.floor(cur_frame) - 1])
-                  cur_frame = Math.floor(cur_frame) - 1
-                  $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) - 1])
-                  console.log('state1', cur_frame)
+                  console.log('state1')
+                  if (imgArr[Math.floor(cur_frame) - 1]) {
+                    $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) - 1])
+                    imgArrIndex = imgArrIndex - 1
+                  } else {
+                    $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
+                    imgArrIndex = Math.floor(imgArr.length)
+                  }
+                  // console.log('state1', cur_frame)
                 }, settings.speed)
               } else {
                 setTimeout(function () {
-                  // var img_name = src.split('/')[src.split('/').length-1]
-                  // var directory = src.split('/').slice(0, -1).join("/")
-                  // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(settings.frames)) + '.' + img_name.split('.')[1]
-                  // $el.find('img.main-frame').attr('src', new_frame)
-                  // cur_frame = Math.floor(imgArr.length) - 1
-                  console.log('state2', cur_frame, imgArr[Math.floor(imgArr.length) - 1])
-                  cur_frame = Math.floor(imgArr.length)
-                  cur_frame = Math.floor(cur_frame) - 1
-                  $el.find('img.main-frame').attr('src', imgArr[cur_frame])
+                  console.log('state2')
+                  // console.log('state2', cur_frame, imgArr[Math.floor(imgArr.length) - 1])
+                  imgArrIndex = Math.floor(imgArr.length)
+                  cur_frame = imgArrIndex
+                  $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
                 }, settings.speed)
 
               }
             } else if (Math.abs(deltaX) > Math.abs(deltaY) && deltaX < 0) {
-              if (Math.floor(cur_frame) < settings.frames) {
+              if (Math.floor(cur_frame) < Math.floor(imgArr.length)) {
                 setTimeout(function () {
-                  // var img_name = src.split('/')[src.split('/').length-1]
-                  // var directory = src.split('/').slice(0, -1).join("/")
-                  // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(cur_frame) + 1) + '.' + img_name.split('.')[1]
-                  // $el.find('img.main-frame').attr('src', new_frame)
-                  if (!criticalPoint) {
-                    console.log('state3', cur_frame, imgArr[Math.floor(cur_frame) + 1])
-                    if (imgArr[Math.floor(cur_frame) + 1]) {
-                      $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) + 1])
-                      // cur_frame = Math.floor(cur_frame) + 1
-                    } else {
-                      $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
-                    }
+                  console.log('state3', imgArrIndex)
+                  // console.log('state3', cur_frame, imgArr[Math.floor(cur_frame) + 1])
+                  if (imgArr[Math.floor(cur_frame) + 1]) {
+                    $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) + 1])
+                    imgArrIndex = imgArrIndex + 1
                   } else {
-                    cur_frame = 0
                     $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
+                    imgArrIndex = 0
                   }
                 }, settings.speed)
               } else {
                 setTimeout(function () {
-                  // var img_name = src.split('/')[src.split('/').length-1]
-                  // var directory = src.split('/').slice(0, -1).join("/")
-                  // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + 1 + '.' + img_name.split('.')[1]
-                  // $el.find('img.main-frame').attr('src', new_frame)
-                  console.log('state4', cur_frame)
-                  $el.find('img.main-frame').attr('src', imgArr[0])
+                  console.log('state4')
+                  // console.log('state4', cur_frame, imgArrIndex)
+                  $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
+                  imgArrIndex = 0
                 }, settings.speed)
               }
             }
           }
-
           last_position = {
             x : e.clientX,
             y : e.clientY
@@ -145,11 +128,13 @@ export function Jq3d ($) {
         }
         $('.draggable').on('mouseup', function () {
           $(this).removeClass('draggable')
+          console.log('in 1')
         })
       })
       e.preventDefault()  // disable selection
-    }).on('mouseup', function () {
+    }).on('mouseup', function (e) {
       $(this).removeClass('draggable')
+      console.log('in 2')
     })
   }
 
@@ -160,34 +145,25 @@ export function Jq3d ($) {
     el.drags(settings)
     var imgArr = settings.imgArr
     var x = 0
-    var step = 100 / Math.floor(settings.frames)
-    var cur_frame = el.find('img.main-frame').attr('src').split('_')[1].split('.')[0]
+    var step = 100 / Math.floor(imgArr.length)
+    var cur_frame = imgArrIndex
 
     function animate_3d () {
-      console.log('animate_3d')
+      // console.log('animate_3d')
       var src = el.find('img.main-frame').attr('src')
       el.find('img.main-frame').css('opacity', (x * step) / 100)
       if (Math.floor(cur_frame) < Math.floor(imgArr.length)) {
         setTimeout(function () {
-          // var img_name = src.split('/')[src.split('/').length-1]
-          // var directory = src.split('/').slice(0, -1).join('/')
-          // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(cur_frame) + 1) + '.' + img_name.split('.')[1]
-          // el.find('img.main-frame').attr('src', new_frame)
           el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) + 1])
-          cur_frame = Math.floor(cur_frame) + 1
+          imgArrIndex = imgArrIndex + 1
         }, settings.speed)
       } else {
         setTimeout(function () {
-          // var img_name = src.split('/')[src.split('/').length-1]
-          // var directory = src.split('/').slice(0, -1).join('/')
-          // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + 1 + '.' + img_name.split('.')[1]
-          // el.find('img.main-frame').attr('src', new_frame)
-          el.find('img.main-frame').attr('src', imgArr[1])
-          cur_frame = 1
+          el.find('img.main-frame').attr('src', imgArr[0])
+          imgArrIndex = 0
         }, settings.speed)
       }
-
-      if (x++ < (settings.frames - 1)) {
+      if (x++ < (Math.floor(imgArr.length) - 1)) {
         if (settings.autoPlay != false) {
           setTimeout(animate_3d, 0)
         } else {
@@ -205,17 +181,18 @@ export function Jq3d ($) {
       document.addEventListener('touchmove', touchHandler, true)
       document.addEventListener('touchend', touchHandler, true)
       document.addEventListener('touchcancel', touchHandler, true)
+      // document.addEventListener('touchstart', touchStart, false)
     }
 
-    /*if (settings.preloadImages == true) {
+    if (settings.preloadImages == true) {
       var src = el.find('img.main-frame').attr('src')
       var arr = []
-      for (var i = 1; i < settings.frames + 1; i++) {
-        var img_name = src.split('/')[src.split('/').length-1]
-        var directory = src.split('/').slice(0, -1).join('/')
-        arr.push(directory + '/' + img_name.split('_')[0] + '_' + i + '.' + img_name.split('.')[1])
-      }
-      $(arr).preload(el)
+      // for (var i = 1; i < Math.floor(imgArr.length) + 1; i++) {
+      //   var img_name = src.split('/')[src.split('/').length-1]
+      //   var directory = src.split('/').slice(0, -1).join('/')
+      //   arr.push(directory + '/' + img_name.split('_')[0] + '_' + i + '.' + img_name.split('.')[1])
+      // }
+      $(imgArr).preload(el)
 
       if (settings.loading != false) {
         var imgs = $('.images_cache > img').not(function () { return this.complete })
@@ -223,21 +200,36 @@ export function Jq3d ($) {
         el.append('<div class="loading_3d">' + settings.loading + '</div>')
         el.find('.main-frame').css('visibility', 'hidden')
         if (count) {
-          imgs.load(function () {
-            count--
-            if (!count) {
-              el.find('.main-frame').css('visibility', 'visible')
-              el.find('.loading_3d').remove()
-              if (settings.autoPlay == false) animate_3d()
-            }
-          })
+          el.find('.main-frame').css('visibility', 'visible')
+          el.find('.loading_3d').remove()
+          if (settings.autoPlay == false) animate_3d()
+          // imgs.load(function () {
+          //   count--
+          //   if (!count) {
+          //     el.find('.main-frame').css('visibility', 'visible')
+          //     el.find('.loading_3d').remove()
+          //     if (settings.autoPlay == false) animate_3d()
+          //   }
+          // })
+
+          // var defereds = []
+          //
+          // $imgs.each(function () {
+          //   var dfd = $.Deferred()
+          //
+          //   $(this).load(dfd.resolve)
+          //   defereds.push(dfd)
+          // })
+          // $.when.apply(null, defereds).done(function () {
+          //   console.log('load compeleted')
+          // })
         } else {
           el.find('.main-frame').css('visibility', 'visible')
           el.find('.loading_3d').remove()
           if (settings.autoPlay == false) animate_3d()
         }
       }
-    }*/
+    }
 
     if (settings.autoPlay != false) {
       function intervalTrigger () {
@@ -256,4 +248,3 @@ export function Jq3d ($) {
     }
   }
 }
-
