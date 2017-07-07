@@ -62,10 +62,15 @@ export function Jq3d ($) {
           // if (Math.floor(cur_frame) >= settings.frames - 1) {
           //   cur_frame = 1
           // }
-          console.log('========', Math.floor(cur_frame), imgArr.length)
-          if (Math.floor(cur_frame) >= imgArr.length) {
-            cur_frame = 1
-            console.log('reset')
+          var criticalPoint = false
+          console.log('========', Math.floor(cur_frame), imgArr.length, criticalPoint)
+          // if (Math.floor(cur_frame) >= imgArr.length) {
+          //   cur_frame = 1
+          //   console.log('reset')
+          // }
+          if (Math.floor(cur_frame) == imgArr.length) {
+            criticalPoint = true
+            console.log('reset', criticalPoint)
           }
 
           if (typeof(last_position.x) != 'undefined') {
@@ -80,9 +85,11 @@ export function Jq3d ($) {
                   // var directory = src.split('/').slice(0, -1).join('/')
                   // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(cur_frame) - 1) + '.' + img_name.split('.')[1]
                   // $el.find('img.main-frame').attr('src', new_frame)
+                  // cur_frame = Math.floor(cur_frame) - 1
+                  // console.log('state1', cur_frame, imgArr[Math.floor(cur_frame) - 1])
                   cur_frame = Math.floor(cur_frame) - 1
-                  console.log('state1', cur_frame, imgArr[Math.floor(cur_frame) - 1])
-                  $el.find('img.main-frame').attr('src', imgArr[cur_frame - 1])
+                  $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) - 1])
+                  console.log('state1', cur_frame)
                 }, settings.speed)
               } else {
                 setTimeout(function () {
@@ -90,9 +97,11 @@ export function Jq3d ($) {
                   // var directory = src.split('/').slice(0, -1).join("/")
                   // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(settings.frames)) + '.' + img_name.split('.')[1]
                   // $el.find('img.main-frame').attr('src', new_frame)
-                  cur_frame = Math.floor(imgArr.length) - 1
+                  // cur_frame = Math.floor(imgArr.length) - 1
                   console.log('state2', cur_frame, imgArr[Math.floor(imgArr.length) - 1])
-                  $el.find('img.main-frame').attr('src', imgArr[cur_frame - 1])
+                  cur_frame = Math.floor(imgArr.length)
+                  cur_frame = Math.floor(cur_frame) - 1
+                  $el.find('img.main-frame').attr('src', imgArr[cur_frame])
                 }, settings.speed)
 
               }
@@ -103,9 +112,18 @@ export function Jq3d ($) {
                   // var directory = src.split('/').slice(0, -1).join("/")
                   // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + (parseInt(cur_frame) + 1) + '.' + img_name.split('.')[1]
                   // $el.find('img.main-frame').attr('src', new_frame)
-                  console.log('state3', cur_frame)
-                  cur_frame = Math.floor(cur_frame) + 1
-                  $el.find('img.main-frame').attr('src', imgArr[cur_frame])
+                  if (!criticalPoint) {
+                    console.log('state3', cur_frame, imgArr[Math.floor(cur_frame) + 1])
+                    if (imgArr[Math.floor(cur_frame) + 1]) {
+                      $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame) + 1])
+                      // cur_frame = Math.floor(cur_frame) + 1
+                    } else {
+                      $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
+                    }
+                  } else {
+                    cur_frame = 0
+                    $el.find('img.main-frame').attr('src', imgArr[Math.floor(cur_frame)])
+                  }
                 }, settings.speed)
               } else {
                 setTimeout(function () {
@@ -114,7 +132,7 @@ export function Jq3d ($) {
                   // var new_frame = directory + '/' + img_name.split('_')[0] + '_' + 1 + '.' + img_name.split('.')[1]
                   // $el.find('img.main-frame').attr('src', new_frame)
                   console.log('state4', cur_frame)
-                  $el.find('img.main-frame').attr('src', imgArr[1])
+                  $el.find('img.main-frame').attr('src', imgArr[0])
                 }, settings.speed)
               }
             }
@@ -149,7 +167,7 @@ export function Jq3d ($) {
       console.log('animate_3d')
       var src = el.find('img.main-frame').attr('src')
       el.find('img.main-frame').css('opacity', (x * step) / 100)
-      if (Math.floor(cur_frame) < Math.floor(settings.frames)) {
+      if (Math.floor(cur_frame) < Math.floor(imgArr.length)) {
         setTimeout(function () {
           // var img_name = src.split('/')[src.split('/').length-1]
           // var directory = src.split('/').slice(0, -1).join('/')
