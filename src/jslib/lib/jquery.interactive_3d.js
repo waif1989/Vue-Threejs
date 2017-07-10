@@ -55,8 +55,10 @@ export function Jq3d ($) {
       var $drag = $(this).addClass('draggable')
       // var cur_pos = e.pageX
       var last_position = {}
-
-      $drag.parents().on('mousemove', function (e) {
+      /* -------------------------------------------------------------- */
+      // $drag.parents().on('mousemove', function (e) {
+      $drag.find('img').on('mousemove', function (e) {
+        // console.log('draggable', $('.draggable'))
         if ($('.draggable').length > 0) {
           var src = $el.find('img.main-frame').attr('src')
           var cur_frame = imgArrIndex
@@ -69,7 +71,7 @@ export function Jq3d ($) {
             imgArrIndex = Math.floor(imgArr.length)
             cur_frame = imgArrIndex
           }
-
+          /* -------------------------------------------------------------- */
           if (typeof(last_position.x) != 'undefined') {
             //get the change from last position to this position
             var deltaX = last_position.x - e.clientX
@@ -126,14 +128,16 @@ export function Jq3d ($) {
             y : e.clientY
           }
         }
+        /* -------------------------------------------------------------- */
         $('.draggable').on('mouseup', function () {
           $(this).removeClass('draggable')
           console.log('in 1')
         })
       })
-      e.preventDefault()  // disable selection
+      // e.preventDefault()  // disable selection
     }).on('mouseup', function (e) {
       $(this).removeClass('draggable')
+      e.preventDefault()
       console.log('in 2')
     })
   }
